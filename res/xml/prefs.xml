@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+            android:key="pref_support"
+            android:title="@string/pref_support_title"
+            android:summary="@string/pref_support_summary">
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://forum.xda-developers.com/showthread.php?t=2646504"/>
+    </Preference>
+    <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_disabled"
+            android:title="@string/pref_disabled_title"
+            android:summary="@string/pref_disabled_summary"/>
+    <Preference
+            android:key="pref_blacklist"
+            android:title="@string/pref_blacklist_title"
+            android:summary="@string/pref_blacklist_summary"/>
+    <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_show_app_icon"
+            android:title="@string/pref_show_app_icon_title"
+            android:summary="@string/pref_show_app_icon_summary"/>
+</PreferenceScreen>
