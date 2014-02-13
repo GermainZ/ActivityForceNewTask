@@ -7,9 +7,9 @@
     <string name="pref_show_app_icon_summary">Disable to hide the icon of this app in your
         launcher.
     </string>
-    <string name="pref_blacklist_title">Class Blacklist</string>
-    <string name="pref_blacklist_summary">Setup the blacklist to ignore certain classes. See support
-        thread for info.
+    <string name="pref_blacklist_title">Component Blacklist</string>
+    <string name="pref_blacklist_summary">Setup the blacklist to ignore certain activity components.
+        See support thread for info.
     </string>
     <string name="pref_disabled_title">Disable module</string>
     <string name="pref_disabled_summary">Quickly enable/disable the module if it\'s causing
@@ -18,5 +18,6 @@
     <string name="button_add">Add</string>
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
+    <string name="toast_duplicate">Item already exists.</string>
 
 </resources>

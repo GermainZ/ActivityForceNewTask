@@ -2,6 +2,7 @@ package com.germainz.activityforcenewtask;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,13 +43,19 @@ public class SettingsHelper {
         return getStringSet("blacklist", set);
     }
 
-    public void addBlacklistItem(String blacklistItem) {
+    public boolean addBlacklistItem(String blacklistItem) {
         Set<String> set = new HashSet<String>();
-        set.addAll(getBlacklistItems());
+        Set<String> blacklistItems = getBlacklistItems();
+        if (blacklistItems.contains(blacklistItem)) {
+            Toast.makeText(context, R.string.toast_duplicate, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        set.addAll(blacklistItems);
         set.add(blacklistItem);
         SharedPreferences.Editor prefEditor = sharedPreferences.edit();
         prefEditor.putStringSet("blacklist", set);
         prefEditor.apply();
+        return true;
     }
 
     public void removeBlacklistItem(String blacklistItem) {
