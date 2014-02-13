@@ -71,26 +71,6 @@ public class SettingsHelper {
         prefEditor.apply();
     }
 
-    public Set getLogItems() {
-        Set<String> set = new HashSet<String>();
-        return getStringSet("log", set);
-    }
-
-    public void addLogItem(String logItem) {
-        Set<String> set = new HashSet<String>();
-        set.addAll(getLogItems());
-        set.add(logItem);
-        SharedPreferences.Editor prefEditor = sharedPreferences.edit();
-        prefEditor.putStringSet("log", set);
-        prefEditor.apply();
-    }
-
-    public void clearLog() {
-        SharedPreferences.Editor prefEditor = sharedPreferences.edit();
-        prefEditor.remove("log");
-        prefEditor.apply();
-    }
-
     private Set getStringSet(String key, Set<String> defValue) {
         if (sharedPreferences != null)
             return sharedPreferences.getStringSet(key, defValue);

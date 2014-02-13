@@ -1,6 +1,7 @@
 package com.germainz.activityforcenewtask;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,20 +9,25 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class LogActivity extends ListActivity {
 
     private SettingsHelper settingsHelper;
     private ArrayAdapter adapter;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        settingsHelper = new SettingsHelper(getApplicationContext());
-        ArrayList<String> logItems = new ArrayList<String>(settingsHelper.getLogItems());
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, logItems);
+        context = getApplicationContext();
+
+        settingsHelper = new SettingsHelper(context);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getLogItems());
         setListAdapter(adapter);
 
         float scale = getResources().getDisplayMetrics().density;
@@ -30,6 +36,13 @@ public class LogActivity extends ListActivity {
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(R.string.pref_log_title);
+    }
+
+    @Override
+    public void onResume() {
+        adapter.clear();
+        adapter.addAll(getLogItems());
+        super.onResume();
     }
 
     @Override
@@ -49,7 +62,7 @@ public class LogActivity extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_clear:
-                settingsHelper.clearLog();
+                deleteFile(Common.LOG_FILE);
                 adapter.clear();
                 break;
             case android.R.id.home:
@@ -59,6 +72,22 @@ public class LogActivity extends ListActivity {
                 break;
         }
         return true;
+    }
+
+    public ArrayList<String> getLogItems() {
+        BufferedReader input;
+        ArrayList<String> logItems = new ArrayList<String>();
+        try {
+            input = new BufferedReader(new InputStreamReader(context.openFileInput(Common.LOG_FILE)));
+            String line;
+            while ((line = input.readLine()) != null) {
+                logItems.add(line);
+            }
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return logItems;
     }
 
 }
