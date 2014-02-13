@@ -31,6 +31,11 @@ public class SettingsHelper {
         return xSharedPreferences.getBoolean("pref_disabled", false);
     }
 
+    // Only needed from the module's class (XSharedPreferences)
+    public boolean isLogEnabled() {
+        return xSharedPreferences.getBoolean("pref_log_enable", false);
+    }
+
     public boolean isBlacklisted(String s) {
         Set<String> set = getBlacklistItems();
         if (set.contains(s))
@@ -63,6 +68,26 @@ public class SettingsHelper {
         Set<String> stringSet = new HashSet<String>(getBlacklistItems());
         stringSet.remove(blacklistItem);
         prefEditor.putStringSet("blacklist", stringSet);
+        prefEditor.apply();
+    }
+
+    public Set getLogItems() {
+        Set<String> set = new HashSet<String>();
+        return getStringSet("log", set);
+    }
+
+    public void addLogItem(String logItem) {
+        Set<String> set = new HashSet<String>();
+        set.addAll(getLogItems());
+        set.add(logItem);
+        SharedPreferences.Editor prefEditor = sharedPreferences.edit();
+        prefEditor.putStringSet("log", set);
+        prefEditor.apply();
+    }
+
+    public void clearLog() {
+        SharedPreferences.Editor prefEditor = sharedPreferences.edit();
+        prefEditor.remove("log");
         prefEditor.apply();
     }
 

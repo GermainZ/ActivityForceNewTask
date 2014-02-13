@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import java.lang.reflect.Method;
@@ -39,7 +38,11 @@ public class XposedMod implements IXposedHookZygoteInit {
                 // If the component is in the blacklist, do nothing
                 if (settingsHelper.isBlacklisted(componentString))
                     return;
-                XposedBridge.log("activityforcenewtask componentString: " + componentString);
+                // Log if necessary
+                if (settingsHelper.isLogEnabled()) {
+                    context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra("componentString", componentString));
+                    XposedBridge.log("activityforcenewtask componentString: " + componentString);
+                }
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
         };

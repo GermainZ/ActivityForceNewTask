@@ -48,6 +48,15 @@ public class Preferences extends Activity {
                     return true;
                 }
             });
+            Preference log = this.findPreference("pref_log");
+            log.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference arg0) {
+                    Intent i = new Intent(Preferences.this, LogActivity.class);
+                    startActivity(i);
+                    return true;
+                }
+            });
         }
     }
 }

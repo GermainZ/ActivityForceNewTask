@@ -14,10 +14,19 @@
             android:key="pref_disabled"
             android:title="@string/pref_disabled_title"
             android:summary="@string/pref_disabled_summary"/>
+    <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_log_enable"
+            android:title="@string/pref_enable_log_title"
+            android:summary="@string/pref_enable_log_summary"/>
     <Preference
             android:key="pref_blacklist"
             android:title="@string/pref_blacklist_title"
             android:summary="@string/pref_blacklist_summary"/>
+    <Preference
+            android:key="pref_log"
+            android:title="@string/pref_log_title"
+            android:summary="@string/pref_log_summary"/>
     <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_show_app_icon"

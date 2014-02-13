@@ -30,6 +30,13 @@
         </activity-alias>
 
         <activity android:name="com.germainz.activityforcenewtask.BlacklistActivity"/>
+        <receiver
+                android:name="com.germainz.activityforcenewtask.Logger">
+            <intent-filter>
+                <action android:name="com.germainz.activityforcenewtask.log"/>
+            </intent-filter>
+        </receiver>
+        <activity android:name=".LogActivity"/>
 
         <meta-data
                 android:name="xposedmodule"
