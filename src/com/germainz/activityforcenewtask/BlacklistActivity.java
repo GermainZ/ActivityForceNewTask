@@ -57,7 +57,7 @@ public class BlacklistActivity extends ListActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.button_add);
                 final EditText input = new EditText(this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 builder.setView(input);
                 builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
