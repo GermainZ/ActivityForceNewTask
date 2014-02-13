@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="app_name">ActivityForceNewTask</string>
+    <string name="pref_support_title">Téma podpory na XDA</string>
+    <string name="pref_support_summary">Zmeny sa prejavia okamžite.</string>
+    <string name="pref_show_app_icon_title">Zobraziť ikonu aplikácie</string>
+    <string name="pref_show_app_icon_summary">Zrušte pre skrytie ikony tejto aplikácie v launcheri.
+    </string>
+    <string name="pref_blacklist_title">Čierna listina</string>
+    <string name="pref_blacklist_summary">Nastavenie čiernej listiny pre ignorovanie niektorých aplikácií. Pozrite tému podpory pre viac informácií.
+    </string>
+    <string name="pref_disabled_title">Zakázať modul</string>
+    <string name="pref_disabled_summary">Rýchle zakázanie/povolenie tohoto modulu pri problémoch, bez nutnosti reštartovať zariadenie.
+    </string>
+    <string name="button_add">Pridať</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Zrušiť</string>
+
+</resources>
