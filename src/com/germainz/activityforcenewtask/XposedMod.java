@@ -19,9 +19,14 @@ import de.robv.android.xposed.XposedBridge;
 
 public class XposedMod implements IXposedHookZygoteInit {
 
+    final static SettingsHelper settingsHelper = new SettingsHelper();
+    // Safe intents that can be run in a new task (the calling app does not expect a return value.)
+    final static String[] intentActions = {"android.intent.action.MAIN", "android.intent.action.VIEW",
+            "android.intent.action.EDIT", "android.intent.action.ATTACH_DATA", "android.intent.action.SEND",
+            "android.intent.action.SENDTO", "android.intent.action.WEB_SEARCH"};
+
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        final SettingsHelper settingsHelper = new SettingsHelper();
 
         XC_MethodHook hook = new XC_MethodHook() {
             @Override
@@ -30,6 +35,13 @@ public class XposedMod implements IXposedHookZygoteInit {
                 if (settingsHelper.isModDisabled())
                     return;
                 Intent intent = (Intent) param.args[0];
+                String intentAction = intent.getAction();
+                // If the intent is not a known safe intent (as in, the launching app does not expect
+                // data back, so it's safe to run in a new task,) ignore it
+                if (intentAction == null || shouldIgnore(intentAction)) {
+                    XposedBridge.log("activityforcenewtask IGNORED INTENT ACTION: " + intentAction);
+                    return;
+                }
                 // Get the activity component that's about to be launched
                 Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
                 Context context = (Context) callMethod(activityThread, "getSystemContext");
@@ -48,5 +60,17 @@ public class XposedMod implements IXposedHookZygoteInit {
         };
         Method startActivity = findMethodExact(Activity.class, "startActivity", Intent.class, Bundle.class);
         XposedBridge.hookMethod(startActivity, hook);
+    }
+
+    boolean shouldIgnore(String action) {
+        int i = intentActions.length;
+        int j = 0;
+        while (j < i) {
+            if (action.equals(intentActions[j])) {
+                return false;
+            }
+            j++;
+        }
+        return true;
     }
 }
