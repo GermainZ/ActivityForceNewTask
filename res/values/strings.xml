@@ -26,5 +26,6 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_clear">Clear</string>
     <string name="toast_duplicate">Item already exists.</string>
+    <string name="toast_added">Item added to blacklist.</string>
 
 </resources>

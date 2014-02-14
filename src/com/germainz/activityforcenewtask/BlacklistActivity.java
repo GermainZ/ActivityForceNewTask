@@ -31,7 +31,8 @@ public class BlacklistActivity extends ListActivity {
 
         float scale = getResources().getDisplayMetrics().density;
         int padding = (int) (8 * scale + 0.5f);
-        getListView().setPadding(padding*2, padding, padding*2, padding);
+        getListView().setPadding(padding * 2, padding, padding * 2, padding);
+        getListView().setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(R.string.pref_blacklist_title);

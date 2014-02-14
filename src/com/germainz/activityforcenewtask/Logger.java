@@ -16,13 +16,20 @@ public class Logger extends BroadcastReceiver {
 
     public void addLogItem(Context context, String logItem) {
         String eol = System.getProperty("line.separator");
-        BufferedWriter writer;
+        BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new OutputStreamWriter(context.openFileOutput(Common.LOG_FILE, Context.MODE_APPEND)));
             writer.write(logItem + eol);
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
