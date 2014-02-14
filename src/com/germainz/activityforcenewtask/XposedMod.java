@@ -38,10 +38,8 @@ public class XposedMod implements IXposedHookZygoteInit {
                 String intentAction = intent.getAction();
                 // If the intent is not a known safe intent (as in, the launching app does not expect
                 // data back, so it's safe to run in a new task,) ignore it
-                if (intentAction == null || shouldIgnore(intentAction)) {
-                    XposedBridge.log("activityforcenewtask IGNORED INTENT ACTION: " + intentAction);
+                if (intentAction == null || shouldIgnore(intentAction))
                     return;
-                }
                 // Get the activity component that's about to be launched
                 Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
                 Context context = (Context) callMethod(activityThread, "getSystemContext");
