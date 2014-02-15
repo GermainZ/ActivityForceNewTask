@@ -16,6 +16,12 @@
             android:summary="@string/pref_disabled_summary"/>
     <CheckBoxPreference
             android:defaultValue="false"
+            android:key="pref_blacklist_enable"
+            android:title="@string/pref_enable_blacklist_title"
+            android:summary="@string/pref_enable_blacklist_summary"/>
+    <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="pref_blacklist_enable"
             android:key="pref_log_enable"
             android:title="@string/pref_enable_log_title"
             android:summary="@string/pref_enable_log_summary"/>

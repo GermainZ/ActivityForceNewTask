@@ -22,7 +22,7 @@ public class LogActivity extends ListActivity {
     private SettingsHelper settingsHelper;
     private ArrayAdapter adapter;
     private Context context;
-    private ArrayList<String> logItems;
+    private ArrayList<String> logItems = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,9 +31,9 @@ public class LogActivity extends ListActivity {
         context = getApplicationContext();
 
         settingsHelper = new SettingsHelper(context);
-        logItems = getLogItems();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, logItems);
         setListAdapter(adapter);
+        getLogItems();
 
         float scale = getResources().getDisplayMetrics().density;
         int padding = (int) (8 * scale + 0.5f);
@@ -46,9 +46,7 @@ public class LogActivity extends ListActivity {
 
     @Override
     public void onRestart() {
-        logItems = getLogItems();
-        adapter.clear();
-        adapter.addAll(logItems);
+        getLogItems();
         super.onResume();
     }
 
@@ -73,7 +71,7 @@ public class LogActivity extends ListActivity {
             case R.id.action_clear:
                 deleteFile(Common.LOG_FILE);
                 logItems.clear();
-                adapter.clear();
+                adapter.notifyDataSetChanged();
                 break;
             case android.R.id.home:
                 onBackPressed();
@@ -84,9 +82,8 @@ public class LogActivity extends ListActivity {
         return true;
     }
 
-    public ArrayList<String> getLogItems() {
+    public void getLogItems() {
         BufferedReader input = null;
-        ArrayList<String> logItems = new ArrayList<String>();
         try {
             input = new BufferedReader(new InputStreamReader(context.openFileInput(Common.LOG_FILE)));
             String line;
@@ -104,16 +101,15 @@ public class LogActivity extends ListActivity {
                 }
             }
         }
-        return logItems;
+        adapter.notifyDataSetChanged();
     }
 
     public void removeLogItem(String logItem) {
         for (int i = logItems.size() - 1; i >= 0; i--) {
-            if (logItem.equals(logItems.get(i))) {
+            if (logItem.equals(logItems.get(i)))
                 logItems.remove(i);
-                adapter.remove(logItem);
-            }
         }
+        adapter.notifyDataSetChanged();
         String eol = System.getProperty("line.separator");
         BufferedWriter writer = null;
         try {

@@ -4,7 +4,12 @@
     <string name="pref_support_title">Support Thread</string>
     <string name="pref_support_summary">Changes apply immediately.</string>
     <string name="pref_enable_log_title">Enable Logging</string>
-    <string name="pref_enable_log_summary">Logging will only happen if this option is checked.</string>
+    <string name="pref_enable_log_summary">Logging will only happen if this option is checked.
+    </string>
+    <string name="pref_enable_blacklist_title">Enable the Blacklist</string>
+    <string name="pref_enable_blacklist_summary">The blacklist won\'t have any effect unless this
+        option is checked.
+    </string>
     <string name="pref_show_app_icon_title">Show launcher icon</string>
     <string name="pref_show_app_icon_summary">Disable to hide the icon of this app in your
         launcher.

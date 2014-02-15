@@ -18,7 +18,7 @@ public class Preferences extends Activity {
 
     }
 
-    public class PrefsFragment extends PreferenceFragment {
+    public static class PrefsFragment extends PreferenceFragment {
 
         @SuppressWarnings("deprecation")
         @Override
@@ -27,15 +27,15 @@ public class Preferences extends Activity {
 
             getPreferenceManager().setSharedPreferencesMode(MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.prefs);
+            final Activity activity = getActivity();
             Preference pref = this.findPreference("pref_show_app_icon");
             pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Activity act = getActivity();
-                    PackageManager p = act.getPackageManager();
+                    PackageManager p = activity.getPackageManager();
                     int state = (Boolean) newValue ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-                    final ComponentName alias = new ComponentName(getActivity(), "com.germainz.activityforcenewtask.Preferences-Alias");
+                    final ComponentName alias = new ComponentName(activity, "com.germainz.activityforcenewtask.Preferences-Alias");
                     p.setComponentEnabledSetting(alias, state, PackageManager.DONT_KILL_APP);
                     return true;
                 }
@@ -44,7 +44,7 @@ public class Preferences extends Activity {
             blacklist.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference arg0) {
-                    Intent i = new Intent(Preferences.this, BlacklistActivity.class);
+                    Intent i = new Intent(activity, BlacklistActivity.class);
                     startActivity(i);
                     return true;
                 }
@@ -53,7 +53,7 @@ public class Preferences extends Activity {
             log.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference arg0) {
-                    Intent i = new Intent(Preferences.this, LogActivity.class);
+                    Intent i = new Intent(activity, LogActivity.class);
                     startActivity(i);
                     return true;
                 }

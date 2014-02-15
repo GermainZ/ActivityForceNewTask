@@ -10,7 +10,7 @@ import java.io.OutputStreamWriter;
 
 public class Logger extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
-        String componentString = intent.getStringExtra("componentString");
+        String componentString = intent.getStringExtra(Common.INTENT_COMPONENT_EXTRA);
         addLogItem(context, componentString);
     }
 

@@ -26,28 +26,24 @@ public class SettingsHelper {
         this.context = context;
     }
 
-    // Only needed from the module's class (XSharedPreferences)
+    // The methods below are only called from the module's class (XSharedPreferences)
     public boolean isModDisabled() {
-        return xSharedPreferences.getBoolean("pref_disabled", false);
+        return xSharedPreferences.getBoolean(Common.PREF_DISABLED, false);
     }
 
-    // Only needed from the module's class (XSharedPreferences)
     public boolean isLogEnabled() {
-        return xSharedPreferences.getBoolean("pref_log_enable", false);
+        return xSharedPreferences.getBoolean(Common.PREF_LOG_ENABLED, false);
     }
 
-    public boolean isBlacklisted(String s) {
-        Set<String> set = getBlacklistItems();
-        if (set.contains(s))
-            return true;
-        return false;
+    public boolean isBlacklistEnabled() {
+        return xSharedPreferences.getBoolean(Common.PREF_BLACKLIST_ENABLED, false);
     }
 
-    public Set getBlacklistItems() {
-        Set<String> set = new HashSet<String>();
-        return getStringSet("blacklist", set);
+    public void reload() {
+        xSharedPreferences.reload();
     }
 
+    // The methods below are only called from activities (SharedPreferences)
     public boolean addBlacklistItem(String blacklistItem) {
         Set<String> set = new HashSet<String>();
         Set<String> blacklistItems = getBlacklistItems();
@@ -58,7 +54,7 @@ public class SettingsHelper {
         set.addAll(blacklistItems);
         set.add(blacklistItem);
         SharedPreferences.Editor prefEditor = sharedPreferences.edit();
-        prefEditor.putStringSet("blacklist", set);
+        prefEditor.putStringSet(Common.PREF_BLACKLIST, set);
         prefEditor.apply();
         return true;
     }
@@ -67,20 +63,25 @@ public class SettingsHelper {
         SharedPreferences.Editor prefEditor = sharedPreferences.edit();
         Set<String> stringSet = new HashSet<String>(getBlacklistItems());
         stringSet.remove(blacklistItem);
-        prefEditor.putStringSet("blacklist", stringSet);
+        prefEditor.putStringSet(Common.PREF_BLACKLIST, stringSet);
         prefEditor.apply();
     }
 
-    private Set getStringSet(String key, Set<String> defValue) {
-        if (sharedPreferences != null)
-            return sharedPreferences.getStringSet(key, defValue);
-        else if (xSharedPreferences != null)
-            return xSharedPreferences.getStringSet(key, defValue);
-        return defValue;
+    // These methods can be called from both
+    public boolean isBlacklisted(String s) {
+        Set<String> set = getBlacklistItems();
+        if (set.contains(s))
+            return true;
+        return false;
     }
 
-    // Only needed for XSharedPreferences
-    public void reload() {
-        xSharedPreferences.reload();
+    public Set getBlacklistItems() {
+        Set<String> set = new HashSet<String>();
+        if (sharedPreferences != null)
+            return sharedPreferences.getStringSet(Common.PREF_BLACKLIST, set);
+        else if (xSharedPreferences != null)
+            return xSharedPreferences.getStringSet(Common.PREF_BLACKLIST, set);
+        return set;
     }
+
 }

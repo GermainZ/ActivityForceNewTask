@@ -19,11 +19,12 @@ import de.robv.android.xposed.XposedBridge;
 
 public class XposedMod implements IXposedHookZygoteInit {
 
-    final static SettingsHelper settingsHelper = new SettingsHelper();
+    private final static SettingsHelper settingsHelper = new SettingsHelper();
     // Safe intents that can be run in a new task (the calling app does not expect a return value.)
-    final static String[] intentActions = {"android.intent.action.MAIN", "android.intent.action.VIEW",
+    private final static String[] INTENT_ACTIONS = {"android.intent.action.MAIN", "android.intent.action.VIEW",
             "android.intent.action.EDIT", "android.intent.action.ATTACH_DATA", "android.intent.action.SEND",
             "android.intent.action.SENDTO", "android.intent.action.WEB_SEARCH"};
+    private final static int INTENT_ACTIONS_LENGTH = INTENT_ACTIONS.length;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -40,18 +41,20 @@ public class XposedMod implements IXposedHookZygoteInit {
                 // data back, so it's safe to run in a new task,) ignore it
                 if (intentAction == null || shouldIgnore(intentAction))
                     return;
-                // Get the activity component that's about to be launched
-                Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
-                Context context = (Context) callMethod(activityThread, "getSystemContext");
-                ComponentName componentName = intent.resolveActivity(context.getPackageManager());
-                String componentString = componentName.flattenToString();
-                // If the component is in the blacklist, do nothing
-                if (settingsHelper.isBlacklisted(componentString))
-                    return;
-                // Log if necessary
-                if (settingsHelper.isLogEnabled()) {
-                    context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra("componentString", componentString));
-                    XposedBridge.log("activityforcenewtask componentString: " + componentString);
+                if (settingsHelper.isBlacklistEnabled()) {
+                    // Get the activity component that's about to be launched
+                    Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
+                    Context context = (Context) callMethod(activityThread, "getSystemContext");
+                    ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+                    String componentString = componentName.flattenToString();
+                    // If the component is in the blacklist, do nothing
+                    if (settingsHelper.isBlacklisted(componentString))
+                        return;
+                    // Log if necessary
+                    if (settingsHelper.isLogEnabled()) {
+                        context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentString));
+                        XposedBridge.log("activityforcenewtask componentString: " + componentString);
+                    }
                 }
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
@@ -61,13 +64,9 @@ public class XposedMod implements IXposedHookZygoteInit {
     }
 
     boolean shouldIgnore(String action) {
-        int i = intentActions.length;
-        int j = 0;
-        while (j < i) {
-            if (action.equals(intentActions[j])) {
+        for (int i = 0; i < INTENT_ACTIONS_LENGTH; i++) {
+            if (action.equals(INTENT_ACTIONS[i]))
                 return false;
-            }
-            j++;
         }
         return true;
     }
