@@ -22,7 +22,7 @@ public class LogActivity extends ListActivity {
     private SettingsHelper settingsHelper;
     private ArrayAdapter adapter;
     private Context context;
-    private ArrayList<String> logItems = new ArrayList<String>();
+    final private ArrayList<String> logItems = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class LogActivity extends ListActivity {
         return true;
     }
 
-    public void getLogItems() {
+    private void getLogItems() {
         BufferedReader input = null;
         try {
             input = new BufferedReader(new InputStreamReader(context.openFileInput(Common.LOG_FILE)));
@@ -104,7 +104,7 @@ public class LogActivity extends ListActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void removeLogItem(String logItem) {
+    private void removeLogItem(String logItem) {
         for (int i = logItems.size() - 1; i >= 0; i--) {
             if (logItem.equals(logItems.get(i)))
                 logItems.remove(i);
@@ -127,7 +127,6 @@ public class LogActivity extends ListActivity {
                 }
             }
         }
-        return;
     }
 
 }

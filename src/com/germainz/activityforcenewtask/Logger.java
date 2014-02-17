@@ -14,7 +14,7 @@ public class Logger extends BroadcastReceiver {
         addLogItem(context, componentString);
     }
 
-    public void addLogItem(Context context, String logItem) {
+    private void addLogItem(Context context, String logItem) {
         String eol = System.getProperty("line.separator");
         BufferedWriter writer = null;
         try {

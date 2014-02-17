@@ -1,7 +1,6 @@
 package com.germainz.activityforcenewtask;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,15 +44,14 @@ public class XposedMod implements IXposedHookZygoteInit {
                     // Get the activity component that's about to be launched
                     Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
                     Context context = (Context) callMethod(activityThread, "getSystemContext");
-                    ComponentName componentName = intent.resolveActivity(context.getPackageManager());
-                    String componentString = componentName.flattenToString();
+                    String componentName = intent.resolveActivity(context.getPackageManager()).flattenToString();
                     // If the component is in the blacklist, do nothing
-                    if (settingsHelper.isBlacklisted(componentString))
+                    if (settingsHelper.isBlacklisted(componentName))
                         return;
                     // Log if necessary
                     if (settingsHelper.isLogEnabled()) {
-                        context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentString));
-                        XposedBridge.log("activityforcenewtask componentString: " + componentString);
+                        context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentName));
+                        XposedBridge.log("activityforcenewtask componentString: " + componentName);
                     }
                 }
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

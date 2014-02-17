@@ -84,13 +84,13 @@ public class BlacklistActivity extends ListActivity {
         return true;
     }
 
-    public void addBlacklistItem(String s) {
+    private void addBlacklistItem(String s) {
         boolean isNotDuplicate = settingsHelper.addBlacklistItem(s);
         if (isNotDuplicate)
             adapter.add(s);
     }
 
-    public void removeBlacklistItem(String s) {
+    private void removeBlacklistItem(String s) {
         settingsHelper.removeBlacklistItem(s);
         adapter.remove(s);
     }

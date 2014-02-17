@@ -70,9 +70,7 @@ public class SettingsHelper {
     // These methods can be called from both
     public boolean isBlacklisted(String s) {
         Set<String> set = getBlacklistItems();
-        if (set.contains(s))
-            return true;
-        return false;
+        return set.contains(s);
     }
 
     public Set getBlacklistItems() {
