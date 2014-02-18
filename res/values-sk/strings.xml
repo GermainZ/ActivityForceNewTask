@@ -5,6 +5,9 @@
     <string name="pref_support_summary">Zmeny sa prejavia okamžite.</string>
     <string name="pref_enable_log_title">Povoliť logovanie</string>
     <string name="pref_enable_log_summary">Logovanie bude fungovať len ak je táto možnosť povolená.</string>
+    <string name="pref_enable_blacklist_title">Povoliť čiernu listinu</string>
+    <string name="pref_enable_blacklist_summary">Čierna listina bude fungovať len ak je táto možnosť povolená.
+    </string>
     <string name="pref_show_app_icon_title">Zobraziť ikonu aplikácie</string>
     <string name="pref_show_app_icon_summary">Zrušte pre skrytie ikony tejto aplikácie v launcheri.
     </string>
@@ -22,5 +25,6 @@
     <string name="button_cancel">Zrušiť</string>
     <string name="button_clear">Vyčistiť</string>
     <string name="toast_duplicate">Položka už existuje.</string>
+    <string name="toast_added">Položka pridaná do čiernej listiny.</string>
 
 </resources>
