@@ -6,22 +6,23 @@
     <string name="pref_enable_log_title">Enable Logging</string>
     <string name="pref_enable_log_summary">Logging will only happen if this option is checked.
     </string>
-    <string name="pref_enable_blacklist_title">Enable the Blacklist</string>
-    <string name="pref_enable_blacklist_summary">The blacklist won\'t have any effect unless this
-        option is checked.
+    <string name="pref_list_type_title">Filter type</string>
+    <string name="pref_list_type_summary">Enable a blacklist or a whitelist if you need them, or
+        none.
     </string>
+    <string name="list_type_entries_none">None</string>
+    <string name="list_type_entries_blacklist">Blacklist</string>
+    <string name="list_type_entries_whitelist">Whitelist</string>
     <string name="pref_show_app_icon_title">Show launcher icon</string>
     <string name="pref_show_app_icon_summary">Disable to hide the icon of this app in your
         launcher.
     </string>
-    <string name="pref_blacklist_title">Component Blacklist</string>
-    <string name="pref_blacklist_summary">Setup the blacklist to ignore certain activity components.
-        See support thread for info.
+    <string name="pref_list_title">Component Filter</string>
+    <string name="pref_list_summary">Setup the filter to ignore certain activity components. See
+        support thread for info.
     </string>
     <string name="pref_log_title">Log</string>
-    <string name="pref_log_summary">View logged activity components. Blacklisted components are not
-        logged.
-    </string>
+    <string name="pref_log_summary">View logged activity components.</string>
     <string name="pref_disabled_title">Disable module</string>
     <string name="pref_disabled_summary">Quickly enable/disable the module if it\'s causing
         problems, without having to reboot.
@@ -31,6 +32,6 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_clear">Clear</string>
     <string name="toast_duplicate">Item already exists.</string>
-    <string name="toast_added">Item added to blacklist.</string>
+    <string name="toast_added">Item added.</string>
 
 </resources>

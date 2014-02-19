@@ -3,6 +3,7 @@ package com.germainz.activityforcenewtask;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -28,8 +29,9 @@ public class Preferences extends Activity {
             getPreferenceManager().setSharedPreferencesMode(MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.prefs);
             final Activity activity = getActivity();
-            Preference pref = this.findPreference("pref_show_app_icon");
-            pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+
+            final Preference pref_show_app_icon = this.findPreference("pref_show_app_icon");
+            pref_show_app_icon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -40,8 +42,9 @@ public class Preferences extends Activity {
                     return true;
                 }
             });
-            Preference blacklist = this.findPreference("pref_blacklist");
-            blacklist.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            final Preference pref_list = this.findPreference("pref_list");
+            pref_list.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference arg0) {
                     Intent i = new Intent(activity, BlacklistActivity.class);
@@ -49,8 +52,9 @@ public class Preferences extends Activity {
                     return true;
                 }
             });
-            Preference log = this.findPreference("pref_log");
-            log.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            final Preference pref_log = this.findPreference("pref_log");
+            pref_log.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference arg0) {
                     Intent i = new Intent(activity, LogActivity.class);
@@ -58,6 +62,26 @@ public class Preferences extends Activity {
                     return true;
                 }
             });
+
+            final Preference pref_log_enable = this.findPreference("pref_log_enable");
+
+            final SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
+            Boolean enabled = !sharedPreferences.getString(Common.PREF_LIST_TYPE, Common.PREF_LIST_NONE).equals(Common.PREF_LIST_NONE);
+            pref_list.setEnabled(enabled);
+            pref_log.setEnabled(enabled);
+            pref_log_enable.setEnabled(enabled);
+
+            final Preference pref_list_type = this.findPreference("pref_list_type");
+            pref_list_type.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Boolean enabled = !newValue.toString().equals(Common.PREF_LIST_NONE);
+                    pref_list.setEnabled(enabled);
+                    pref_log.setEnabled(enabled);
+                    pref_log_enable.setEnabled(enabled);
+                    return true;
+                }
+            });
+
         }
     }
 }

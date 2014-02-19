@@ -37,22 +37,29 @@ public class XposedMod implements IXposedHookZygoteInit {
                 Intent intent = (Intent) param.args[0];
                 String intentAction = intent.getAction();
                 // If the intent is not a known safe intent (as in, the launching app does not expect
-                // data back, so it's safe to run in a new task,) ignore it
+                // data back, so it's safe to run in a new task,) ignore it straight away.
                 if (intentAction == null || shouldIgnore(intentAction))
                     return;
-                if (settingsHelper.isBlacklistEnabled()) {
-                    // Get the activity component that's about to be launched
+                String listType = settingsHelper.getListType();
+                XposedBridge.log("listType: " + listType);
+                if (listType != null) {
+                    // Get the activity component that's about to be launched so we can compare that
+                    // against our blacklist/whitelist.
                     Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
                     Context context = (Context) callMethod(activityThread, "getSystemContext");
                     String componentName = intent.resolveActivity(context.getPackageManager()).flattenToString();
-                    // If the component is in the blacklist, do nothing
-                    if (settingsHelper.isBlacklisted(componentName))
-                        return;
-                    // Log if necessary
+                    // Log if necessary.
                     if (settingsHelper.isLogEnabled()) {
                         context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentName));
                         XposedBridge.log("activityforcenewtask componentString: " + componentName);
                     }
+                    // If the blacklist is used and the component is in the blacklist, or if the
+                    // whitelist is used and the component isn't whitelisted, we shouldn't modify
+                    // the intent's flags.
+                    boolean isListed = settingsHelper.isListed(componentName, listType);
+                    if ((listType.equals(Common.PREF_BLACKLIST) && isListed) ||
+                            (listType.equals(Common.PREF_WHITELIST) && !isListed))
+                        return;
                 }
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }

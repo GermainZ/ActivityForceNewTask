@@ -35,51 +35,62 @@ public class SettingsHelper {
         return xSharedPreferences.getBoolean(Common.PREF_LOG_ENABLED, false);
     }
 
-    public boolean isBlacklistEnabled() {
-        return xSharedPreferences.getBoolean(Common.PREF_BLACKLIST_ENABLED, false);
-    }
-
     public void reload() {
         xSharedPreferences.reload();
     }
 
     // The methods below are only called from activities (SharedPreferences)
-    public boolean addBlacklistItem(String blacklistItem) {
+    public boolean addListItem(String listItem, String listType) {
         Set<String> set = new HashSet<String>();
-        Set<String> blacklistItems = getBlacklistItems();
-        if (blacklistItems.contains(blacklistItem)) {
+        Set<String> listItems = getListItems(listType);
+        if (listItems.contains(listItem)) {
             Toast.makeText(context, R.string.toast_duplicate, Toast.LENGTH_SHORT).show();
             return false;
         }
-        set.addAll(blacklistItems);
-        set.add(blacklistItem);
+        set.addAll(listItems);
+        set.add(listItem);
         SharedPreferences.Editor prefEditor = sharedPreferences.edit();
-        prefEditor.putStringSet(Common.PREF_BLACKLIST, set);
+        prefEditor.putStringSet(listType, set);
         prefEditor.apply();
         return true;
     }
 
-    public void removeBlacklistItem(String blacklistItem) {
+    public void removeListItem(String listItem, String listType) {
         SharedPreferences.Editor prefEditor = sharedPreferences.edit();
-        Set<String> stringSet = new HashSet<String>(getBlacklistItems());
-        stringSet.remove(blacklistItem);
-        prefEditor.putStringSet(Common.PREF_BLACKLIST, stringSet);
+        Set<String> stringSet = new HashSet<String>(getListItems(listType));
+        stringSet.remove(listItem);
+        prefEditor.putStringSet(listType, stringSet);
         prefEditor.apply();
     }
 
     // These methods can be called from both
-    public boolean isBlacklisted(String s) {
-        Set<String> set = getBlacklistItems();
+    public boolean isListed(String s, String listType) {
+        Set<String> set = getListItems(listType);
         return set.contains(s);
     }
 
-    public Set getBlacklistItems() {
+    public Set getListItems(String listType) {
         Set<String> set = new HashSet<String>();
         if (sharedPreferences != null)
-            return sharedPreferences.getStringSet(Common.PREF_BLACKLIST, set);
+            return sharedPreferences.getStringSet(listType, set);
         else if (xSharedPreferences != null)
-            return xSharedPreferences.getStringSet(Common.PREF_BLACKLIST, set);
+            return xSharedPreferences.getStringSet(listType, set);
         return set;
+    }
+
+    public String getListType() {
+        String listTypeValue;
+        if (sharedPreferences != null)
+            listTypeValue = sharedPreferences.getString(Common.PREF_LIST_TYPE, Common.PREF_LIST_NONE);
+        else if (xSharedPreferences != null)
+            listTypeValue = xSharedPreferences.getString(Common.PREF_LIST_TYPE, Common.PREF_LIST_NONE);
+        else
+            return null;
+        if (listTypeValue.equals(Common.PREF_LIST_WHITELIST))
+            return Common.PREF_WHITELIST;
+        else if (listTypeValue.equals(Common.PREF_LIST_BLACKLIST))
+            return Common.PREF_BLACKLIST;
+        return null;
     }
 
 }
