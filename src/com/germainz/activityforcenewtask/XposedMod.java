@@ -41,7 +41,6 @@ public class XposedMod implements IXposedHookZygoteInit {
                 if (intentAction == null || shouldIgnore(intentAction))
                     return;
                 String listType = settingsHelper.getListType();
-                XposedBridge.log("listType: " + listType);
                 if (listType != null) {
                     // Get the activity component that's about to be launched so we can compare that
                     // against our blacklist/whitelist.
