@@ -1,0 +1,33 @@
+<resources>
+
+    <string name="app_name">ActivityForceNewTask</string>
+    <string name="pref_support_title">Support-Thread</string>
+    <string name="pref_support_summary">Änderungen werden sofort angewendet.</string>
+    <string name="pref_enable_log_title">Protokollierung aktivieren</string>
+    <string name="pref_enable_log_summary">Es wird nur protokolliert, falls die Option aktiviert ist.
+    </string>
+    <string name="pref_list_type_title">Filtertyp</string>
+    <string name="pref_list_type_summary">Schwarze oder weiße Liste aktivieren, falls benötigt, ansonsten keiner.
+    </string>
+    <string name="list_type_entries_none">Keiner</string>
+    <string name="list_type_entries_blacklist">Schwarze Liste</string>
+    <string name="list_type_entries_whitelist">Weiße Liste</string>
+    <string name="pref_show_app_icon_title">App-Symbol anzeigen</string>
+    <string name="pref_show_app_icon_summary">Deaktivieren, um das App-Symbol in der App-Übersicht auszublenden
+    </string>
+    <string name="pref_list_title">Komponenten-Filter</string>
+    <string name="pref_list_summary">Nutze den Filter, um bestimmte Activity-Komponenten zu ignorieren. Siehe Support-Thread für weitere Informationen.
+    </string>
+    <string name="pref_log_title">Protokoll</string>
+    <string name="pref_log_summary">Protokollierte Activity-Komponenten ansehen.</string>
+    <string name="pref_disabled_title">Modul deaktivieren</string>
+    <string name="pref_disabled_summary">Schnelles (De-)Aktivieren des Moduls ohne Neustart, falls es Probleme verursacht.
+    </string>
+    <string name="button_add">Hinzufügen</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Abbrechen</string>
+    <string name="button_clear">Löschen</string>
+    <string name="toast_duplicate">Element existiert bereits.</string>
+    <string name="toast_added">Element hinzugefügt.</string>
+
+</resources>
