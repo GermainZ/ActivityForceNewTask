@@ -11,6 +11,7 @@ import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.findMethodExact;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
@@ -30,11 +31,12 @@ public class XposedMod implements IXposedHookZygoteInit {
 
         XC_MethodHook hook = new XC_MethodHook() {
             @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 settingsHelper.reload();
                 if (settingsHelper.isModDisabled())
                     return;
-                Intent intent = (Intent) param.args[0];
+                Intent intent = (Intent) getObjectField(param.thisObject, "intent");
+
                 String intentAction = intent.getAction();
                 // If the intent is not a known safe intent (as in, the launching app does not expect
                 // data back, so it's safe to run in a new task,) ignore it straight away.
@@ -63,8 +65,9 @@ public class XposedMod implements IXposedHookZygoteInit {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
         };
-        Method startActivity = findMethodExact(Activity.class, "startActivity", Intent.class, Bundle.class);
-        XposedBridge.hookMethod(startActivity, hook);
+
+        Class ActivityRecord = findClass("com.android.server.am.ActivityRecord", null);
+        XposedBridge.hookAllConstructors(ActivityRecord, hook);
     }
 
     boolean shouldIgnore(String action) {
