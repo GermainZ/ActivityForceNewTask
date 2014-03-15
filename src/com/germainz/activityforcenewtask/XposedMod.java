@@ -1,16 +1,11 @@
 package com.germainz.activityforcenewtask;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-
-import java.lang.reflect.Method;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
-import static de.robv.android.xposed.XposedHelpers.findMethodExact;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -24,7 +19,6 @@ public class XposedMod implements IXposedHookZygoteInit {
     private final static String[] INTENT_ACTIONS = {"android.intent.action.MAIN", "android.intent.action.VIEW",
             "android.intent.action.EDIT", "android.intent.action.ATTACH_DATA", "android.intent.action.SEND",
             "android.intent.action.SENDTO", "android.intent.action.WEB_SEARCH"};
-    private final static int INTENT_ACTIONS_LENGTH = INTENT_ACTIONS.length;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -71,7 +65,7 @@ public class XposedMod implements IXposedHookZygoteInit {
     }
 
     boolean shouldIgnore(String action) {
-        for (int i = 0; i < INTENT_ACTIONS_LENGTH; i++) {
+        for (int i = 0; i < INTENT_ACTIONS.length; i++) {
             if (action.equals(INTENT_ACTIONS[i]))
                 return false;
         }
