@@ -61,7 +61,7 @@ public class XposedMod implements IXposedHookZygoteInit {
                             (listType.equals(Common.PREF_WHITELIST) && !isListed))
                         return;
                 }
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
         };
 
