@@ -12,7 +12,7 @@
     <string name="list_type_entries_blacklist">Čierna listina</string>
     <string name="list_type_entries_whitelist">Biela listina</string>
     <string name="pref_show_app_icon_title">Zobraziť ikonu aplikácie</string>
-    <string name="pref_show_app_icon_summary">Zrušte pre skrytie ikony tejto aplikácie v launcheri.
+    <string name="pref_show_app_icon_summary">Zrušte pre skrytie ikony tejto aplikácie v menu aplikácií.
     </string>
     <string name="pref_list_title">Filter</string>
     <string name="pref_list_summary">Nastavenie filtra pre ignorovanie niektorých aplikácií. Pozrite tému podpory pre viac informácií.
