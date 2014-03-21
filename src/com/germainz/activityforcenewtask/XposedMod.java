@@ -7,6 +7,7 @@ import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
@@ -41,7 +42,11 @@ public class XposedMod implements IXposedHookZygoteInit {
                     // Get the activity component that's about to be launched so we can compare that
                     // against our blacklist/whitelist.
                     Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
-                    Context context = (Context) callMethod(activityThread, "getSystemContext");
+                    Context context = null;
+                    if (activityThread != null)
+                        context = (Context) callMethod(activityThread, "getSystemContext");
+                    else
+                        context = (Context) getStaticObjectField(findClass("android.app.ActivityThread", null), "mSystemContext");
                     String componentName = intent.resolveActivity(context.getPackageManager()).flattenToString();
                     // Log if necessary.
                     if (settingsHelper.isLogEnabled()) {
