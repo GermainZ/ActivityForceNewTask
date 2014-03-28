@@ -37,30 +37,24 @@ public class XposedMod implements IXposedHookZygoteInit {
                 // data back, so it's safe to run in a new task,) ignore it straight away.
                 if (intentAction == null || shouldIgnore(intentAction))
                     return;
-                String listType = settingsHelper.getListType();
-                if (listType != null) {
-                    // Get the activity component that's about to be launched so we can compare that
-                    // against our blacklist/whitelist.
-                    Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
-                    Context context = null;
-                    if (activityThread != null)
-                        context = (Context) callMethod(activityThread, "getSystemContext");
-                    else
-                        context = (Context) getStaticObjectField(findClass("android.app.ActivityThread", null), "mSystemContext");
-                    String componentName = intent.resolveActivity(context.getPackageManager()).flattenToString();
-                    // Log if necessary.
-                    if (settingsHelper.isLogEnabled()) {
-                        context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentName));
-                        XposedBridge.log("activityforcenewtask componentString: " + componentName);
-                    }
-                    // If the blacklist is used and the component is in the blacklist, or if the
-                    // whitelist is used and the component isn't whitelisted, we shouldn't modify
-                    // the intent's flags.
-                    boolean isListed = settingsHelper.isListed(componentName, listType);
-                    if ((listType.equals(Common.PREF_BLACKLIST) && isListed) ||
-                            (listType.equals(Common.PREF_WHITELIST) && !isListed))
-                        return;
+                // Get the activity component that's about to be launched so we can compare that
+                // against our whitelist.
+                Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
+                Context context;
+                if (activityThread != null)
+                    context = (Context) callMethod(activityThread, "getSystemContext");
+                else
+                    context = (Context) getStaticObjectField(findClass("android.app.ActivityThread", null), "mSystemContext");
+                String componentName = intent.resolveActivity(context.getPackageManager()).flattenToString();
+                // Log if necessary.
+                if (settingsHelper.isLogEnabled()) {
+                    context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentName));
+                    XposedBridge.log("activityforcenewtask componentString: " + componentName);
                 }
+                // We shouldn't modify the intent's flag unless the component is whitelisted.
+                boolean isListed = settingsHelper.isListed(componentName);
+                if (!isListed)
+                    return;
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
         };

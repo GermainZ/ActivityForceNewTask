@@ -16,7 +16,7 @@
     <string name="pref_show_app_icon_summary">Deaktivieren, um das App-Symbol in der App-Übersicht auszublenden
     </string>
     <string name="pref_list_title">Komponenten-Filter</string>
-    <string name="pref_list_summary">Nutze den Filter, um bestimmte Activity-Komponenten zu ignorieren. Siehe Support-Thread für weitere Informationen.
+    <string name="pref_enabled_components_summary">Nutze den Filter, um bestimmte Activity-Komponenten zu ignorieren. Siehe Support-Thread für weitere Informationen.
     </string>
     <string name="pref_log_title">Protokoll</string>
     <string name="pref_log_summary">Protokollierte Activity-Komponenten ansehen.</string>

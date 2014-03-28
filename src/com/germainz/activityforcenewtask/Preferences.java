@@ -63,25 +63,6 @@ public class Preferences extends Activity {
                 }
             });
 
-            final Preference pref_log_enable = this.findPreference("pref_log_enable");
-
-            final SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
-            Boolean enabled = !sharedPreferences.getString(Common.PREF_LIST_TYPE, Common.PREF_LIST_NONE).equals(Common.PREF_LIST_NONE);
-            pref_list.setEnabled(enabled);
-            pref_log.setEnabled(enabled);
-            pref_log_enable.setEnabled(enabled);
-
-            final Preference pref_list_type = this.findPreference("pref_list_type");
-            pref_list_type.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Boolean enabled = !newValue.toString().equals(Common.PREF_LIST_NONE);
-                    pref_list.setEnabled(enabled);
-                    pref_log.setEnabled(enabled);
-                    pref_log_enable.setEnabled(enabled);
-                    return true;
-                }
-            });
-
         }
     }
 }

@@ -14,14 +14,6 @@
             android:key="pref_disabled"
             android:title="@string/pref_disabled_title"
             android:summary="@string/pref_disabled_summary"/>
-    <ListPreference
-            android:key="pref_list_type"
-            android:title="@string/pref_list_type_title"
-            android:summary="@string/pref_list_type_summary"
-            android:dialogTitle="@string/pref_list_type_title"
-            android:defaultValue="0"
-            android:entries="@array/list_type_entries"
-            android:entryValues="@array/list_type_values"/>
     <CheckBoxPreference
             android:defaultValue="false"
             android:key="pref_log_enable"
@@ -29,8 +21,8 @@
             android:summary="@string/pref_enable_log_summary"/>
     <Preference
             android:key="pref_list"
-            android:title="@string/pref_list_title"
-            android:summary="@string/pref_list_summary"/>
+            android:title="@string/pref_enabled_components"
+            android:summary="@string/pref_enabled_components_summary"/>
     <Preference
             android:key="pref_log"
             android:title="@string/pref_log_title"
