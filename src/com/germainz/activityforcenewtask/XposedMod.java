@@ -33,6 +33,10 @@ public class XposedMod implements IXposedHookZygoteInit {
                     return;
                 Intent intent = (Intent) param.args[0];
 
+                // The intent already has FLAG_ACTIVITY_NEW_TASK set, no need to do anything.
+                if ((intent.getFlags() & Intent.FLAG_ACTIVITY_NEW_TASK) == Intent.FLAG_ACTIVITY_NEW_TASK)
+                    return;
+
                 String intentAction = intent.getAction();
                 // If the intent is not a known safe intent (as in, the launching app does not expect
                 // data back, so it's safe to run in a new task,) ignore it straight away.
