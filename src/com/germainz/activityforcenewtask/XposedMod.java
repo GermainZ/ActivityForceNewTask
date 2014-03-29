@@ -1,13 +1,14 @@
 package com.germainz.activityforcenewtask;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
-import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
@@ -26,11 +27,11 @@ public class XposedMod implements IXposedHookZygoteInit {
 
         XC_MethodHook hook = new XC_MethodHook() {
             @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 settingsHelper.reload();
                 if (settingsHelper.isModDisabled())
                     return;
-                Intent intent = (Intent) getObjectField(param.thisObject, "intent");
+                Intent intent = (Intent) param.args[0];
 
                 String intentAction = intent.getAction();
                 // If the intent is not a known safe intent (as in, the launching app does not expect
@@ -40,11 +41,7 @@ public class XposedMod implements IXposedHookZygoteInit {
                 // Get the activity component that's about to be launched so we can compare that
                 // against our whitelist.
                 Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
-                Context context;
-                if (activityThread != null)
-                    context = (Context) callMethod(activityThread, "getSystemContext");
-                else
-                    context = (Context) getStaticObjectField(findClass("android.app.ActivityThread", null), "mSystemContext");
+                Context context = (Context) callMethod(activityThread, "getSystemContext");
                 String componentName = intent.resolveActivity(context.getPackageManager()).flattenToString();
                 // Log if necessary.
                 if (settingsHelper.isLogEnabled()) {
@@ -59,8 +56,7 @@ public class XposedMod implements IXposedHookZygoteInit {
             }
         };
 
-        Class ActivityRecord = findClass("com.android.server.am.ActivityRecord", null);
-        XposedBridge.hookAllConstructors(ActivityRecord, hook);
+        findAndHookMethod(Activity.class, "startActivity", Intent.class, Bundle.class, hook);
     }
 
     boolean shouldIgnore(String action) {
