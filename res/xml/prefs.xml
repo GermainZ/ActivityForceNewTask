@@ -22,15 +22,15 @@
             android:defaultValue="0"
             android:entries="@array/list_type_entries"
             android:entryValues="@array/list_type_values"/>
+    <Preference
+        android:key="pref_list"
+        android:title="@string/pref_list_title"
+        android:summary="@string/pref_list_summary"/>
     <CheckBoxPreference
             android:defaultValue="false"
             android:key="pref_log_enable"
             android:title="@string/pref_enable_log_title"
             android:summary="@string/pref_enable_log_summary"/>
-    <Preference
-            android:key="pref_list"
-            android:title="@string/pref_list_title"
-            android:summary="@string/pref_list_summary"/>
     <Preference
             android:key="pref_log"
             android:title="@string/pref_log_title"
