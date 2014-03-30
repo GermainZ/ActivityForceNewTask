@@ -1,6 +1,8 @@
 package com.germainz.activityforcenewtask;
 
 import android.app.Activity;
+import android.app.AndroidAppHelper;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,20 +44,29 @@ public class XposedMod implements IXposedHookZygoteInit {
                 // data back, so it's safe to run in a new task,) ignore it straight away.
                 if (intentAction == null || shouldIgnore(intentAction))
                     return;
+
                 // Get the activity component that's about to be launched so we can compare that
                 // against our whitelist.
                 Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
                 Context context = (Context) callMethod(activityThread, "getSystemContext");
-                String componentName = intent.resolveActivity(context.getPackageManager()).flattenToString();
+                ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+
+                // If the app is launching one of its own activities, we shouldn't open it in a new task.
+                if (componentName.getPackageName().equals(AndroidAppHelper.currentPackageName()))
+                    return;
+
+                String componentNameString = componentName.flattenToString();
                 // Log if necessary.
                 if (settingsHelper.isLogEnabled()) {
-                    context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentName));
-                    XposedBridge.log("activityforcenewtask componentString: " + componentName);
+                    context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentNameString));
+                    XposedBridge.log("activityforcenewtask componentString: " + componentNameString);
                 }
+
                 // We shouldn't modify the intent's flag unless the component is whitelisted.
-                boolean isListed = settingsHelper.isListed(componentName);
+                boolean isListed = settingsHelper.isListed(componentNameString);
                 if (!isListed)
                     return;
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
         };
