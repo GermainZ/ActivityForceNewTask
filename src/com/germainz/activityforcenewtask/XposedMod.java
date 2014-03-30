@@ -75,8 +75,8 @@ public class XposedMod implements IXposedHookZygoteInit {
     }
 
     boolean shouldIgnore(String action) {
-        for (int i = 0; i < INTENT_ACTIONS.length; i++) {
-            if (action.equals(INTENT_ACTIONS[i]))
+        for (String INTENT_ACTION : INTENT_ACTIONS) {
+            if (action.equals(INTENT_ACTION))
                 return false;
         }
         return true;
