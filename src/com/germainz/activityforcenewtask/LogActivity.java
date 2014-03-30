@@ -1,5 +1,6 @@
 package com.germainz.activityforcenewtask;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
@@ -74,6 +75,14 @@ public class LogActivity extends ListActivity {
                 deleteFile(Common.LOG_FILE);
                 logItems.clear();
                 adapter.notifyDataSetChanged();
+                break;
+            case R.id.action_help:
+                AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+                helpBuilder.setTitle(R.string.button_help);
+                helpBuilder.setMessage(getString(R.string.logging_help,
+                        getString(R.string.acceptable_activity_help)));
+                helpBuilder.setPositiveButton(R.string.button_ok, null);
+                helpBuilder.show();
                 break;
             case android.R.id.home:
                 onBackPressed();

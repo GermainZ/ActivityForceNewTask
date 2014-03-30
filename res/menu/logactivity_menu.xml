@@ -5,4 +5,8 @@
         android:id="@+id/action_clear"
         android:showAsAction="always"
         android:title="@string/button_clear" />
+    <item
+        android:id="@+id/action_help"
+        android:showAsAction="always"
+        android:title="@string/button_help" />
 </menu>

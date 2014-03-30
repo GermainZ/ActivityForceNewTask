@@ -28,7 +28,22 @@
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_clear">Clear</string>
+    <string name="button_help">Help</string>
     <string name="toast_duplicate">Item already exists.</string>
     <string name="toast_added">Item added.</string>
+    <string name="blacklist_help">All \'acceptable\' activities will be forced to start in a new
+        task, except those added to the blacklist.\n%1$s
+    </string>
+    <string name="whitelist_help">Only \'acceptable\' activities that are also in the whitelist will
+        be forced to start in a new task.\n%1$s</string>
+    <string name="logging_help">Whenever an \'acceptable\' activity is started, a log entry will be
+        created for it. You can tap an entry to automatically add it to the currently used filtering
+        mode.\n%1$s
+    </string>
+    <string name="acceptable_activity_help">An activity is deemed acceptable if:\n
+        • FLAG_ACTIVITY_NEW_TASK is not already set;\n
+        • The intent is \'safe\' - that is, the launching app does not expect data back;\n
+        • The activity isn\'t launched by its own app.\n
+    </string>
 
 </resources>

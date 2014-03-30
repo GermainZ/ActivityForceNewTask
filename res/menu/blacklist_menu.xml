@@ -5,4 +5,8 @@
         android:id="@+id/action_add"
         android:showAsAction="always"
         android:title="@string/button_add" />
+    <item
+        android:id="@+id/action_help"
+        android:showAsAction="always"
+        android:title="@string/button_help" />
 </menu>

@@ -80,6 +80,18 @@ public class BlacklistActivity extends ListActivity {
                 alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 alert.show();
                 break;
+            case R.id.action_help:
+                AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+                helpBuilder.setTitle(R.string.button_help);
+                if (listType.equals(Common.PREF_BLACKLIST))
+                    helpBuilder.setMessage(getString(R.string.blacklist_help,
+                            getString(R.string.acceptable_activity_help)));
+                else
+                    helpBuilder.setMessage(getString(R.string.whitelist_help,
+                            getString(R.string.acceptable_activity_help)));
+                helpBuilder.setPositiveButton(R.string.button_ok, null);
+                helpBuilder.show();
+                break;
             case android.R.id.home:
                 onBackPressed();
                 break;
