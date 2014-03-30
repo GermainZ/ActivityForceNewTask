@@ -47,7 +47,7 @@ public class LogActivity extends ListActivity {
     @Override
     public void onRestart() {
         getLogItems();
-        super.onResume();
+        super.onRestart();
     }
 
     @Override
@@ -84,6 +84,7 @@ public class LogActivity extends ListActivity {
 
     private void getLogItems() {
         BufferedReader input = null;
+        logItems.clear();
         try {
             input = new BufferedReader(new InputStreamReader(context.openFileInput(Common.LOG_FILE)));
             String line;
