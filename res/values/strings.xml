@@ -6,13 +6,17 @@
     <string name="pref_enable_log_title">Enable Logging</string>
     <string name="pref_enable_log_summary">Logging will only happen if this option is checked.
     </string>
-    <string name="pref_enabled_components">Enabled Components</string>
-    <string name="pref_enabled_components_summary">Setup the module to force certain activity components to start
-        as a new task. See support thread for info.
-    </string>
+    <string name="pref_list_type_title">Filter Type</string>
+    <string name="pref_list_type_summary">Choose between the blacklist and the whitelist.</string>
+    <string name="list_type_entries_blacklist">Blacklist</string>
+    <string name="list_type_entries_whitelist">Whitelist</string>
     <string name="pref_show_app_icon_title">Show Launcher Icon</string>
     <string name="pref_show_app_icon_summary">Disable to hide the icon of this app in your
         launcher.
+    </string>
+    <string name="pref_list_title">Component Filter</string>
+    <string name="pref_list_summary">Setup the filter to act on or ignore certain activity
+        components.
     </string>
     <string name="pref_log_title">Log</string>
     <string name="pref_log_summary">View logged activity components.</string>

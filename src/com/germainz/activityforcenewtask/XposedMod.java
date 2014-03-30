@@ -62,9 +62,13 @@ public class XposedMod implements IXposedHookZygoteInit {
                     XposedBridge.log("activityforcenewtask componentString: " + componentNameString);
                 }
 
-                // We shouldn't modify the intent's flag unless the component is whitelisted.
-                boolean isListed = settingsHelper.isListed(componentNameString);
-                if (!isListed)
+                // If the blacklist is used and the component is in the blacklist, or if the
+                // whitelist is used and the component isn't whitelisted, we shouldn't modify
+                // the intent's flags.
+                String listType = settingsHelper.getListType();
+                boolean isListed = settingsHelper.isListed(componentNameString, listType);
+                if ((listType.equals(Common.PREF_BLACKLIST) && isListed) ||
+                        (listType.equals(Common.PREF_WHITELIST) && !isListed))
                     return;
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

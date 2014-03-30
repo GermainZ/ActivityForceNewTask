@@ -23,6 +23,7 @@ public class LogActivity extends ListActivity {
     private ArrayAdapter adapter;
     private Context context;
     final private ArrayList<String> logItems = new ArrayList<String>();
+    private String listType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class LogActivity extends ListActivity {
         context = getApplicationContext();
 
         settingsHelper = new SettingsHelper(context);
+        listType = settingsHelper.getListType();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, logItems);
         setListAdapter(adapter);
         getLogItems();
@@ -59,7 +61,7 @@ public class LogActivity extends ListActivity {
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         String listItem = (String) listView.getItemAtPosition(position);
-        if (settingsHelper.addListItem(listItem))
+        if (settingsHelper.addListItem(listItem, listType))
             Toast.makeText(context, R.string.toast_added, Toast.LENGTH_SHORT).show();
         removeLogItem(listItem);
         super.onListItemClick(listView, view, position, id);

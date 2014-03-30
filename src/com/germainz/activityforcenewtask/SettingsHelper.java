@@ -40,9 +40,9 @@ public class SettingsHelper {
     }
 
     // The methods below are only called from activities (SharedPreferences)
-    public boolean addListItem(String listItem) {
+    public boolean addListItem(String listItem, String listType) {
         Set<String> set = new HashSet<String>();
-        Set<String> listItems = getListItems();
+        Set<String> listItems = getListItems(listType);
         if (listItems.contains(listItem)) {
             Toast.makeText(context, R.string.toast_duplicate, Toast.LENGTH_SHORT).show();
             return false;
@@ -50,32 +50,48 @@ public class SettingsHelper {
         set.addAll(listItems);
         set.add(listItem);
         SharedPreferences.Editor prefEditor = sharedPreferences.edit();
-        prefEditor.putStringSet(Common.WHITELIST, set);
+        prefEditor.putStringSet(listType, set);
         prefEditor.apply();
         return true;
     }
 
-    public void removeListItem(String listItem) {
+    public void removeListItem(String listItem, String listType) {
         SharedPreferences.Editor prefEditor = sharedPreferences.edit();
-        Set<String> stringSet = new HashSet<String>(getListItems());
+        Set<String> stringSet = new HashSet<String>(getListItems(listType));
         stringSet.remove(listItem);
-        prefEditor.putStringSet(Common.WHITELIST, stringSet);
+        prefEditor.putStringSet(listType, stringSet);
         prefEditor.apply();
     }
 
     // These methods can be called from both
-    public boolean isListed(String s) {
-        Set<String> set = getListItems();
+    public boolean isListed(String s, String listType) {
+        Set<String> set = getListItems(listType);
         return set.contains(s);
     }
 
-    public Set getListItems() {
+    public Set getListItems(String listType) {
         Set<String> set = new HashSet<String>();
         if (sharedPreferences != null)
-            return sharedPreferences.getStringSet(Common.WHITELIST, set);
+            return sharedPreferences.getStringSet(listType, set);
         else if (xSharedPreferences != null)
-            return xSharedPreferences.getStringSet(Common.WHITELIST, set);
+            return xSharedPreferences.getStringSet(listType, set);
         return set;
     }
+
+    public String getListType() {
+        String listTypeValue;
+        if (sharedPreferences != null)
+            listTypeValue = sharedPreferences.getString(Common.PREF_LIST_TYPE, Common.PREF_LIST_DEFAULT);
+        else if (xSharedPreferences != null)
+            listTypeValue = xSharedPreferences.getString(Common.PREF_LIST_TYPE, Common.PREF_LIST_DEFAULT);
+        else
+            return null;
+        if (listTypeValue.equals(Common.PREF_LIST_WHITELIST))
+            return Common.PREF_WHITELIST;
+        else if (listTypeValue.equals(Common.PREF_LIST_BLACKLIST))
+            return Common.PREF_BLACKLIST;
+        return null;
+    }
+
 
 }
