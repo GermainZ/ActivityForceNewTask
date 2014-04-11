@@ -15,6 +15,7 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 
 public class XposedMod implements IXposedHookZygoteInit {
 
@@ -29,11 +30,11 @@ public class XposedMod implements IXposedHookZygoteInit {
 
         XC_MethodHook hook = new XC_MethodHook() {
             @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 settingsHelper.reload();
                 if (settingsHelper.isModDisabled())
                     return;
-                Intent intent = (Intent) param.args[0];
+                Intent intent = (Intent) XposedHelpers.getObjectField(param.thisObject, "intent");
 
                 // The intent already has FLAG_ACTIVITY_NEW_TASK set, no need to do anything.
                 if ((intent.getFlags() & Intent.FLAG_ACTIVITY_NEW_TASK) == Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -75,7 +76,8 @@ public class XposedMod implements IXposedHookZygoteInit {
             }
         };
 
-        findAndHookMethod(Activity.class, "startActivity", Intent.class, Bundle.class, hook);
+        Class ActivityRecord = findClass("com.android.server.am.ActivityRecord", null);
+        XposedBridge.hookAllConstructors(ActivityRecord, hook);
     }
 
     boolean shouldIgnore(String action) {
@@ -85,4 +87,5 @@ public class XposedMod implements IXposedHookZygoteInit {
         }
         return true;
     }
+
 }
