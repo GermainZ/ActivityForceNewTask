@@ -1,16 +1,14 @@
 package com.germainz.activityforcenewtask;
 
-import android.app.Activity;
 import android.app.AndroidAppHelper;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
-import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
@@ -49,7 +47,11 @@ public class XposedMod implements IXposedHookZygoteInit {
                 // Get the activity component that's about to be launched so we can compare that
                 // against our whitelist.
                 Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
-                Context context = (Context) callMethod(activityThread, "getSystemContext");
+                Context context;
+                if (activityThread != null)
+                    context = (Context) callMethod(activityThread, "getSystemContext");
+                else
+                    context = (Context) getStaticObjectField(findClass("android.app.ActivityThread", null), "mSystemContext");
                 ComponentName componentName = intent.resolveActivity(context.getPackageManager());
 
                 // If the app is launching one of its own activities, we shouldn't open it in a new task.
