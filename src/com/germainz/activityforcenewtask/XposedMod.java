@@ -1,13 +1,15 @@
 package com.germainz.activityforcenewtask;
 
-import android.app.AndroidAppHelper;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.getIntField;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -18,10 +20,6 @@ import de.robv.android.xposed.XposedHelpers;
 public class XposedMod implements IXposedHookZygoteInit {
 
     private final static SettingsHelper settingsHelper = new SettingsHelper();
-    // Safe intents that can be run in a new task (the calling app does not expect a return value.)
-    private final static String[] INTENT_ACTIONS = {"android.intent.action.MAIN", "android.intent.action.VIEW",
-            "android.intent.action.EDIT", "android.intent.action.ATTACH_DATA", "android.intent.action.SEND",
-            "android.intent.action.SENDTO", "android.intent.action.WEB_SEARCH"};
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -34,6 +32,12 @@ public class XposedMod implements IXposedHookZygoteInit {
                     return;
                 Intent intent = (Intent) XposedHelpers.getObjectField(param.thisObject, "intent");
 
+                // The launching app does not expect data back. It's safe to run the activity in a
+                // new task.
+                int requestCode = getIntField(param.thisObject, "requestCode");
+                if (requestCode != -1)
+                    return;
+
                 // The intent already has FLAG_ACTIVITY_NEW_TASK set, no need to do anything.
                 if ((intent.getFlags() & Intent.FLAG_ACTIVITY_NEW_TASK) == Intent.FLAG_ACTIVITY_NEW_TASK)
                     return;
@@ -41,28 +45,30 @@ public class XposedMod implements IXposedHookZygoteInit {
                 String intentAction = intent.getAction();
                 // If the intent is not a known safe intent (as in, the launching app does not expect
                 // data back, so it's safe to run in a new task,) ignore it straight away.
-                if (intentAction == null || shouldIgnore(intentAction))
+                if (intentAction == null)
                     return;
-
-                // Get the activity component that's about to be launched so we can compare that
-                // against our whitelist.
-                Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
-                Context context;
-                if (activityThread != null)
-                    context = (Context) callMethod(activityThread, "getSystemContext");
-                else
-                    context = (Context) getStaticObjectField(findClass("android.app.ActivityThread", null), "mSystemContext");
-                ComponentName componentName = intent.resolveActivity(context.getPackageManager());
 
                 // If the app is launching one of its own activities, we shouldn't open it in a new task.
-                if (componentName.getPackageName().equals(AndroidAppHelper.currentPackageName()))
+                int uid = ((ActivityInfo) getObjectField(param.thisObject, "info")).applicationInfo.uid;
+                if (getIntField(param.thisObject, "launchedFromUid") == uid)
                     return;
 
+                ComponentName componentName = (ComponentName) getObjectField(param.thisObject, "realActivity");
                 String componentNameString = componentName.flattenToString();
                 // Log if necessary.
                 if (settingsHelper.isLogEnabled()) {
-                    context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentNameString));
-                    XposedBridge.log("activityforcenewtask componentString: " + componentNameString);
+                    // Get context
+                    Context context = (Context) getStaticObjectField(findClass("android.app.ActivityThread", null), "mSystemContext");
+                    if (context == null) {
+                        Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
+                        context = (Context) callMethod(activityThread, "getSystemContext");
+                    }
+
+                    if (context != null)
+                        context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentNameString));
+                    else
+                        XposedBridge.log("activityforcenewtask: couldn't get context.");
+                    XposedBridge.log("activityforcenewtask: componentString: " + componentNameString);
                 }
 
                 // If the blacklist is used and the component is in the blacklist, or if the
@@ -80,14 +86,6 @@ public class XposedMod implements IXposedHookZygoteInit {
 
         Class ActivityRecord = findClass("com.android.server.am.ActivityRecord", null);
         XposedBridge.hookAllConstructors(ActivityRecord, hook);
-    }
-
-    boolean shouldIgnore(String action) {
-        for (String INTENT_ACTION : INTENT_ACTIONS) {
-            if (action.equals(INTENT_ACTION))
-                return false;
-        }
-        return true;
     }
 
 }
