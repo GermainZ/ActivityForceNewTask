@@ -1,9 +1,11 @@
 package com.germainz.activityforcenewtask;
 
+import android.app.AndroidAppHelper;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
@@ -58,11 +60,7 @@ public class XposedMod implements IXposedHookZygoteInit {
                 // Log if necessary.
                 if (settingsHelper.isLogEnabled()) {
                     // Get context
-                    Context context = (Context) getStaticObjectField(findClass("android.app.ActivityThread", null), "mSystemContext");
-                    if (context == null) {
-                        Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
-                        context = (Context) callMethod(activityThread, "getSystemContext");
-                    }
+                    Context context = AndroidAppHelper.currentApplication();
 
                     if (context != null)
                         context.sendBroadcast(new Intent(Common.INTENT_LOG).putExtra(Common.INTENT_COMPONENT_EXTRA, componentNameString));
@@ -74,8 +72,8 @@ public class XposedMod implements IXposedHookZygoteInit {
                 // If the blacklist is used and the component is in the blacklist, or if the
                 // whitelist is used and the component isn't whitelisted, we shouldn't modify
                 // the intent's flags.
+                boolean isListed = settingsHelper.isListed(componentNameString);
                 String listType = settingsHelper.getListType();
-                boolean isListed = settingsHelper.isListed(componentNameString, listType);
                 if ((listType.equals(Common.PREF_BLACKLIST) && isListed) ||
                         (listType.equals(Common.PREF_WHITELIST) && !isListed))
                     return;

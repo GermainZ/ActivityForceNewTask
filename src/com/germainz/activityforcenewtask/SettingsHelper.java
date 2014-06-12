@@ -13,11 +13,15 @@ public class SettingsHelper {
     private XSharedPreferences xSharedPreferences = null;
     private SharedPreferences sharedPreferences = null;
     private Context context = null;
+    private Set<String> listItems;
+    private String listType;
 
     // Called from module's classes.
     public SettingsHelper() {
         xSharedPreferences = new XSharedPreferences(Common.PACKAGE_NAME, Common.PREFS);
         xSharedPreferences.makeWorldReadable();
+        listType = getListType();
+        listItems = getListItems(listType);
     }
 
     // Called from activities.
@@ -36,7 +40,15 @@ public class SettingsHelper {
     }
 
     public void reload() {
-        xSharedPreferences.reload();
+        if (xSharedPreferences.hasFileChanged()) {
+            xSharedPreferences.reload();
+            listType = getListType();
+            listItems = getListItems(listType);
+        }
+    }
+
+    public boolean isListed(String s) {
+        return listItems.contains(s);
     }
 
     // The methods below are only called from activities (SharedPreferences)
@@ -64,12 +76,7 @@ public class SettingsHelper {
     }
 
     // These methods can be called from both
-    public boolean isListed(String s, String listType) {
-        Set<String> set = getListItems(listType);
-        return set.contains(s);
-    }
-
-    public Set getListItems(String listType) {
+    public Set<String> getListItems(String listType) {
         Set<String> set = new HashSet<String>();
         if (sharedPreferences != null)
             return sharedPreferences.getStringSet(listType, set);
@@ -83,7 +90,10 @@ public class SettingsHelper {
         if (sharedPreferences != null)
             listTypeValue = sharedPreferences.getString(Common.PREF_LIST_TYPE, Common.PREF_LIST_DEFAULT);
         else if (xSharedPreferences != null)
-            listTypeValue = xSharedPreferences.getString(Common.PREF_LIST_TYPE, Common.PREF_LIST_DEFAULT);
+            if (listType == null)
+                listTypeValue = xSharedPreferences.getString(Common.PREF_LIST_TYPE, Common.PREF_LIST_DEFAULT);
+            else
+                return listType;
         else
             return null;
         if (listTypeValue.equals(Common.PREF_LIST_WHITELIST))
