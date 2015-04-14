@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ActivityForceNewTask</string>
+    <string name="pref_support_title">Ayuda</string>
+    <string name="pref_support_summary">Para más información en el Foro de XDA</string>
+    <string name="pref_enable_log_title">Activar registro</string>
+    <string name="pref_enable_log_summary">Registro, sólo será posible si se activa esta opción.</string>
+    <string name="pref_list_type_title">Tipo de filtro</string>
+    <string name="pref_list_type_summary">Elija entre la lista negra y lista blanca.</string>
+    <string name="list_type_entries_blacklist">Lista Negra</string>
+    <string name="list_type_entries_whitelist">Lista Blanca</string>
+    <string name="pref_show_app_icon_title">Mostrar icono</string>
+    <string name="pref_show_app_icon_summary">Desmarca para ocultar el icono, en el menú de aplicaciones</string>
+    <string name="pref_list_title">Filtro de componentes</string>
+    <string name="pref_list_summary">Configura cada filtro para actuar en determinadas actividades o ignorar actividades.</string>
+    <string name="pref_log_title">Registro</string>
+    <string name="pref_log_summary">Ver registro de las actividades.</string>
+    <string name="pref_disabled_title">Bloquear Módulo</string>
+    <string name="pref_disabled_summary">"Desactivar el módulo si causa problemas, para no tener que reiniciar."</string>
+    <string name="button_add">Añadir</string>
+    <string name="button_ok">Vale</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="button_clear">Borrar</string>
+    <string name="button_help">Ayuda</string>
+    <string name="toast_duplicate">Información ya añadida.</string>
+    <string name="toast_added">Informacíón añadida.</string>
+    <string name="blacklist_help">"Todas las actividades 'aceptables' se verán obligadas a comenzar en una nueva tarea, excepto las que has añadido a la lista negra.
+%1$s"</string>
+    <string name="whitelist_help">"Sólo las actividades 'aceptable' que esten en la lista blanca, se ven obligadas a iniciar una nueva tarea. 
+%1$s"</string>
+    <string name="logging_help">"Siempre que se inicia la actividad 'aceptable' se creará una entrada en el registro. Puede tocar una entrada, para agregarla automáticamente al filtrado
+%1$s"</string>
+    <string name="acceptable_activity_help">"Una actividad se considerará aceptable si:
+ • FLAG_ACTIVITY_NEW_TASK no está ya establecido.
+ • La intención es 'segura' - es decir, la aplicación de lanzamiento no espera sus datos.
+ • La actividad no es puesta en marcha por su propia aplicación.
+"</string>
+</resources>
