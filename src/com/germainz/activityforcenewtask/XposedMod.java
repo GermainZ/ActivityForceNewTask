@@ -5,26 +5,25 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 
-import static de.robv.android.xposed.XposedHelpers.callMethod;
-import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getIntField;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 
-import de.robv.android.xposed.IXposedHookZygoteInit;
+import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-public class XposedMod implements IXposedHookZygoteInit {
+public class XposedMod implements IXposedHookLoadPackage {
 
     private final static SettingsHelper settingsHelper = new SettingsHelper();
 
     @Override
-    public void initZygote(StartupParam startupParam) throws Throwable {
+    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+        if (!lpparam.packageName.equals("android"))
+            return;
 
         XC_MethodHook hook = new XC_MethodHook() {
             @Override
@@ -82,7 +81,7 @@ public class XposedMod implements IXposedHookZygoteInit {
             }
         };
 
-        Class ActivityRecord = findClass("com.android.server.am.ActivityRecord", null);
+        Class ActivityRecord = findClass("com.android.server.am.ActivityRecord", lpparam.classLoader);
         XposedBridge.hookAllConstructors(ActivityRecord, hook);
     }
 
