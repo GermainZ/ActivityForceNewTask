@@ -7,10 +7,10 @@
     <string name="pref_enable_log_summary">O histórico será registrado somente se esta opção for marcada.
     </string>
     <string name="pref_list_type_title">Filtro</string>
-    <string name="pref_list_type_summary">Escolha entre "blacklist" e "whitelist".</string>
+    <string name="pref_list_type_summary">Escolha entre blacklist e whitelist.</string>
     <string name="list_type_entries_blacklist">Blacklist</string>
     <string name="list_type_entries_whitelist">Whitelist</string>
-    <string name="pref_show_app_icon_title">Mostrar ícone da aplicação</string>
+    <string name="pref_show_app_icon_title">Mostrar ícone</string>
     <string name="pref_show_app_icon_summary">Desmarque para esconder o ícone do aplicativo no launcher.
     </string>
     <string name="pref_list_title">Filtro de componentes</string>
@@ -19,7 +19,7 @@
     <string name="pref_log_title">Histórico</string>
     <string name="pref_log_summary">Veja as atividades registradas no histórico.</string>
     <string name="pref_disabled_title">Desabilitar o modulo</string>
-    <string name="pref_disabled_summary">Habilite/desabilite o modulo rapidamente se estiver\causando problemas, sem precisar reiniciar o sistema.
+    <string name="pref_disabled_summary">Habilite/desabilite o modulo rapidamente se estiver causando problemas, sem precisar reiniciar o sistema.
     </string>
     <string name="button_add">Adicionar</string>
     <string name="button_ok">OK</string>
@@ -36,7 +36,7 @@
     <string name="acceptable_activity_help">Uma atividade é considerada aceitável se:\n
         • FLAG_ACTIVITY_NEW_TASK não estiver adicionado;\n
         • A operação for \'segura\' - Ou seja, o aplicativo anterior não estiver aguardando recebimento de dados;\n
-        • A atividade não for\ iniciada pelo próprio aplicativo.\n
+        • A atividade não for iniciada pelo próprio aplicativo.\n
     </string>
 
 </resources>
