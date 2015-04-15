@@ -22,7 +22,7 @@ public class XposedMod implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        if (!lpparam.packageName.equals("android"))
+        if ((!lpparam.packageName.equals("android")) || (!lpparam.processName.equals("android")))
             return;
 
         XC_MethodHook hook = new XC_MethodHook() {
