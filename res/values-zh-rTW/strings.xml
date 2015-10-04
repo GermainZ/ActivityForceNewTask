@@ -1,0 +1,36 @@
+<resources>
+
+    <string name="app_name">ActivityForceNewTask</string>
+    <string name="pref_support_title">討論串</string>
+    <string name="pref_support_summary">改變立即生效。</string>
+    <string name="pref_enable_log_title">啟用紀錄</string>
+    <string name="pref_enable_log_summary">如果沒有把這個選項勾起來將不會有任何紀錄存在</string>
+    <string name="pref_list_type_title">過濾類型</string>
+    <string name="pref_list_type_summary">可以在黑名單和白名單之間做切換</string>
+    <string name="list_type_entries_blacklist">黑名單</string>
+    <string name="list_type_entries_whitelist">白名單</string>
+    <string name="pref_show_app_icon_title">顯示桌面圖示</string>
+    <string name="pref_show_app_icon_summary">如果您不想在啟動器看到這個程式請勿勾選</string>
+    <string name="pref_list_title">組件過濾</string>
+    <string name="pref_list_summary">為活動組件設定過濾條件</string>
+    <string name="pref_log_title">紀錄</string>
+    <string name="pref_log_summary">查看活動組件紀錄</string>
+    <string name="pref_disabled_title">停用模組</string>
+    <string name="pref_disabled_summary">如果發生問題時，可以快速啟用/停用此模組，而不用重新啟動手機</string>
+    <string name="button_add">新增</string>
+    <string name="button_ok">確定</string>
+    <string name="button_cancel">取消</string>
+    <string name="button_clear">清除</string>
+    <string name="button_help">幫助</string>
+    <string name="toast_duplicate">這個項目已存在</string>
+    <string name="toast_added">項目已新增</string>
+    <string name="blacklist_help">"除了黑名單裡面的，所有\'可接受\'的活動將會被當成新任務開啟。 \n%1$s"</string>
+    <string name="whitelist_help">"只有在白名單裡面\'可接受\'的活動將會被當成新任務開啟。\n%1$s"</string>
+    <string name="logging_help">"只要有\'可接受\'的活動被開啟，就會有紀錄檔產生。你可以透過點擊紀錄來把它加到目前的過濾設定中。\n%1$s</string>
+    <string name="acceptable_activity_help">可接受的活動定義是：\n
+        • 沒有設定FLAG_ACTIVITY_NEW_TASK、\n
+        • 意圖是\'安全的\' - 也就是說,被開啟的程式不會有資料回傳的情況、\n
+        • 並不是被自己本身的程式打開。\n
+    </string>
+
+</resources>
