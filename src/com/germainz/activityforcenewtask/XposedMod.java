@@ -54,7 +54,7 @@ public class XposedMod implements IXposedHookLoadPackage {
                 if (getIntField(param.thisObject, "launchedFromUid") == uid)
                     return;
 
-                ComponentName componentName = (ComponentName) getObjectField(param.thisObject, "realActivity");
+                ComponentName componentName = (ComponentName) getObjectField(param.thisObject, "mActivityComponent");
                 String componentNameString = componentName.flattenToString();
                 // Log if necessary.
                 if (settingsHelper.isLogEnabled()) {
@@ -81,7 +81,7 @@ public class XposedMod implements IXposedHookLoadPackage {
             }
         };
 
-        Class ActivityRecord = findClass("com.android.server.am.ActivityRecord", lpparam.classLoader);
+        Class ActivityRecord = findClass("com.android.server.wm.ActivityRecord", lpparam.classLoader);
         XposedBridge.hookAllConstructors(ActivityRecord, hook);
     }
 
